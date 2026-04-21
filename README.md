@@ -22,7 +22,7 @@ To verify, run `/plugin` — you should see `restatedev-plugin` listed as enable
 
 ## What it helps with
 
-The skill triggers on mentions of Restate, durable execution, virtual objects, workflows, durable agents, `TerminalError`, `ctx.run`, `@restatedev`, `restate-sdk`, and related terms — and proactively when your project already depends on a Restate SDK.
+The skill triggers on mentions of Restate, durable execution, virtual objects, workflows, durable agents, and related terms.
 
 Once active, it progressively loads references for:
 
