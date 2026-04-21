@@ -1,5 +1,5 @@
 {
-  "name": "restatedev-plugin",
+  "name": "restatedev",
   "version": "0.0.1",
   "description": "Restate agent skills for designing, developing, and debugging Restate applications",
   "author": {
