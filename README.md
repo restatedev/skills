@@ -1,5 +1,7 @@
 # Restate Coding Agent Plugin
 
+> This is an early preview of the Restate Coding Agent Plugin. Please submit feedback (positive and negative) in the [Restate Discord](https://discord.restate.dev), [Slack Community](https://slack.restate.dev), or via issues in this repo.
+
 A coding agent plugin for building applications with [Restate](https://restate.dev) — the durable execution runtime for resilient services, workflows, and AI agents.
 
 Works across four Restate SDKs: **TypeScript**, **Python**, **Java**, and **Go**.
