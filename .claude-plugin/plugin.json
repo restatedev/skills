@@ -16,25 +16,6 @@
       "url": "https://docs.restate.dev/mcp"
     }
   },
-  "lspServers": {
-    "python": {
-      "command": "pyright",
-      "extensionToLanguage": { ".py": "python" }
-    },
-    "typescript": {
-      "command": "typescript-language-server",
-      "extensionToLanguage": { ".ts": "typescript", ".js": "javascript" }
-    },
-    "go": {
-      "command": "gopls",
-      "args": ["serve"],
-      "extensionToLanguage": { ".go": "go" }
-    },
-    "java": {
-      "command": "java-language-server",
-      "extensionToLanguage": { ".java": "java" }
-    }
-  },
   "skills": "./skills/"
 }
 
