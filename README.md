@@ -47,7 +47,7 @@ Test a plugin locally with:
 claude --plugin-dir /path/to/this/repo
 ```
 
-> **Note:** The `skills/` folder in this repo is synced automatically every 12 hours from [`restatedev/docs-restate`](https://github.com/restatedev/docs-restate/tree/sdk-skills/restate-plugin/skills), where the skills are authored, tested, and updated. Edits made directly here will be overwritten — contribute changes upstream in `docs-restate` instead. Reference files live under `skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
+> **Note:** The `skills/` folder in this repo is synced automatically every 12 hours from [`restatedev/docs-restate`](https://github.com/restatedev/docs-restate/tree/main/restate-plugin/src), where the skills are authored, tested, and updated. Edits made directly here will be overwritten — contribute changes upstream in `docs-restate` instead. Reference files live under `skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
 
 ## Links
 
