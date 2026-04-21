@@ -1,0 +1,15 @@
+{
+  "name": "restatedev-marketplace",
+  "metadata": {
+    "description": "A marketplace of Claude Code plugins for Restate.dev"
+  },
+  "owner": {
+    "name": "Restate"
+  },
+  "plugins": [
+    {
+      "name": "restatedev-plugin",
+      "source": "./"
+    }
+  ]
+}

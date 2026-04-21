@@ -1,0 +1,40 @@
+{
+  "name": "restatedev-plugin",
+  "version": "0.0.1",
+  "description": "Restate agent skills for designing, developing, and debugging Restate applications",
+  "author": {
+    "name": "Restate",
+    "url": "https://restate.dev"
+  },
+  "homepage": "https://docs.restate.dev",
+  "repository": "https://github.com/restatedev/restate-agent-skills",
+  "license": "MIT",
+  "keywords": ["restate", "durable-execution", "workflows", "ai-agents", "microservices"],
+  "mcpServers": {
+    "restate-docs": {
+      "type": "http",
+      "url": "https://docs.restate.dev/mcp"
+    }
+  },
+  "lspServers": {
+    "python": {
+      "command": "pyright",
+      "extensionToLanguage": { ".py": "python" }
+    },
+    "typescript": {
+      "command": "typescript-language-server",
+      "extensionToLanguage": { ".ts": "typescript", ".js": "javascript" }
+    },
+    "go": {
+      "command": "gopls",
+      "args": ["serve"],
+      "extensionToLanguage": { ".go": "go" }
+    },
+    "java": {
+      "command": "java-language-server",
+      "extensionToLanguage": { ".java": "java" }
+    }
+  },
+  "skills": "./skills/"
+}
+
