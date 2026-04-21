@@ -26,17 +26,17 @@ The skill triggers on mentions of Restate, durable execution, virtual objects, w
 
 Once active, it progressively loads references for:
 
-| Topic | Reference |
-|---|---|
-| SDK setup, API patterns, determinism rules, error handling, testing, pitfalls | `references/<sdk>/api-and-pitfalls.md` |
-| Designing a new Restate application, picking service types | `references/design-and-architecture.md` |
-| Migrating from Temporal, Step Functions, or other orchestrators | `references/translate-to-restate.md` |
-| Invoking, cancelling, attaching, idempotency, sends, Kafka | `references/invocation-lifecycle.md` |
-| Debugging stuck invocations and journal mismatches | `references/debug-applications.md` |
-| AI agents with Vercel AI SDK (TS) | `references/ts/restate-vercel-ai-agents.md` |
-| AI agents with OpenAI Agents SDK (Python) | `references/python/restate-openai-agents-agents.md` |
-| AI agents with Google ADK (Python) | `references/python/restate-google-adk-agents.md` |
-| AI agents with Pydantic AI (Python) | `references/python/restate-pydantic-ai-agents.md` |
+| Topic                                                                                        | Reference |
+|----------------------------------------------------------------------------------------------|---|
+| SDK setup, API patterns, determinism rules, error handling, testing, pitfalls                | `references/<sdk>/api-and-pitfalls.md` |
+| Designing a new Restate application, picking service types                                   | `references/design-and-architecture.md` |
+| Migrating to Restate from other workflow orchestrators or general microservices applications | `references/translate-to-restate.md` |
+| Invoking, cancelling, attaching, idempotency, sends, Kafka                                   | `references/invocation-lifecycle.md` |
+| Debugging stuck invocations and journal mismatches                                           | `references/debug-applications.md` |
+| AI agents with Vercel AI SDK (TS)                                                            | `references/ts/restate-vercel-ai-agents.md` |
+| AI agents with OpenAI Agents SDK (Python)                                                    | `references/python/restate-openai-agents-agents.md` |
+| AI agents with Google ADK (Python)                                                           | `references/python/restate-google-adk-agents.md` |
+| AI agents with Pydantic AI (Python)                                                          | `references/python/restate-pydantic-ai-agents.md` |
 
 Deployment, server configuration, Kafka setup, and other advanced topics are handled by querying the bundled `restate-docs` MCP server.
 
