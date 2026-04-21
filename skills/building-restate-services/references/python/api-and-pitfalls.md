@@ -290,7 +290,7 @@ Never use `asyncio.gather` / `asyncio.wait`. Native asyncio combinators are not 
 
 ```python
 # ❌ BAD
-results1 = await asyncio.gather(call1(), call2())
+results1 = await asyncio.gather(call1, call2)
 
 # ✅ GOOD
 claude_call = ctx.service_call(ask_openai, "What is the weather?")
@@ -302,7 +302,7 @@ results2 = await restate.gather(claude_call, openai_call)
 
 ```python
 # ❌ BAD
-result1 = await asyncio.wait([call1(), call2()], return_when=asyncio.FIRST_COMPLETED)
+result1 = await asyncio.wait([call1, call2], return_when=asyncio.FIRST_COMPLETED)  # type: ignore[type-var]
 
 # ✅ GOOD
 confirmation = ctx.awakeable(type_hint=str)
@@ -432,7 +432,7 @@ except TimeoutError as e:
 
 ### 2. Use Restate concurrency combinators, not asyncio
 
-`asyncio.gather`, `asyncio.wait`, and `asyncio.as_completed` are not journaled and break deterministic replay. Use `restate.gather`, `restate.select`, `restate.wait_completed`, and `restate.as_completed` instead (see the Concurrency section above).
+`asyncio.gather`, `asyncio.wait`, and `asyncio.as_completed` are not journaled and break deterministic replay. Use Restate's Promise combinators instead (see the Concurrency section above).
 
 ### 3. Use `ctx.run_typed` for better type safety
 
@@ -440,7 +440,7 @@ Prefer `ctx.run_typed("label", fn, **kwargs)` over `ctx.run("label", lambda: fn(
 
 ### 4. No native random, time, or UUID
 
-`random.random()`, `time.time()`, `datetime.now()`, and `uuid.uuid4()` produce different values on replay. Use `ctx.random()`, `ctx.time()`, and `ctx.uuid()` (see the Deterministic helpers section above).
+`random.random()`, `time.time()`, `datetime.now()`, and `uuid.uuid4()` produce different values on replay. Use Restate's deterministic helpers instead (see the Deterministic helpers section above).
 
 ### 5. No ctx operations inside ctx.run blocks
 
@@ -461,9 +461,9 @@ Tests run against a real Restate Server in Docker via Testcontainers.
 ```python
 import restate
 
-from my_service import app
+from ..my_service import app
 
-with restate.test_harness(app, replay_always=True) as harness:
+with restate.test_harness(app, always_replay=True) as harness:
     client = harness.ingress_client()
 
     # Invoke a service handler
