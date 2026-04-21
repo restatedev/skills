@@ -40,27 +40,12 @@ Once active, it progressively loads references for:
 
 Deployment, server configuration, Kafka setup, and other advanced topics are handled by querying the bundled `restate-docs` MCP server.
 
-## Repository layout
-
-```
-.claude-plugin/
-├── plugin.json          # plugin manifest (name, MCP server, skills path)
-└── marketplace.json     # marketplace entry
-
-skills/building-restate-services/
-├── SKILL.md             # router: SDK detection + reference index
-└── references/
-    ├── design-and-architecture.md
-    ├── translate-to-restate.md
-    ├── invocation-lifecycle.md
-    ├── debug-applications.md
-    ├── ts/
-    ├── python/
-    ├── java/
-    └── go/
-```
-
 ## Contributing
+
+Test a plugin locally with:
+```shell
+claude --plugin-dir /path/to/this/repo
+```
 
 Reference files live under `skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
 
