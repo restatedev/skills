@@ -1,0 +1,49 @@
+name: Sync skills from docs-restate
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Checkout docs-restate
+        uses: actions/checkout@v4
+        with:
+          repository: restatedev/docs-restate
+          ref: sdk-skills
+          path: .docs-restate
+          sparse-checkout: |
+            restate-plugin/skills
+          sparse-checkout-cone-mode: false
+
+      - name: Sync skills/
+        run: |
+          rm -rf skills
+          mkdir -p skills
+          if [ -d ".docs-restate/restate-plugin/skills" ]; then
+            cp -R .docs-restate/restate-plugin/skills/. skills/
+          else
+            echo "Source directory restate-plugin/skills not found in docs-restate@sdk-skills" >&2
+            exit 1
+          fi
+          rm -rf .docs-restate
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add skills
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: sync skills from restatedev/docs-restate@sdk-skills"
+          git push
