@@ -1,12 +1,10 @@
 ---
 name: building-restate-services
 description: >
-  Build, implement, run, and test Restate durable services, virtual objects,
+  Design, build, run, and test Restate durable services, virtual objects,
   workflows, and AI agents across TypeScript, Python, Java, and Go.
   This skill should be used when the user mentions "restate", "durable execution",
-  "ctx.run", "virtual object", "restate service", "restate workflow",
-  "durable agent", "TerminalError", "restate-sdk", "@restatedev",
-  "durableCalls", "DurableRunner", "RestatePlugin", "RestateAgent",
+  "virtual object", "restate service", "restate workflow", or "durable agent"
   or wants to build resilient backend services, AI agents, or workflows
   with automatic failure recovery. Also use when converting existing applications
   or migrating from workflow orchestrators to Restate.

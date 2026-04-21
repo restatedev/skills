@@ -274,7 +274,7 @@ call1 := restate.RunAsync(ctx, func(ctx restate.RunContext) (string, error) {
 user, err := call1.Result()
 ```
 
-- No Restate context actions within `ctx.run()`.
+- No Restate context actions within `restate.Run()`.
 - Always supply a name, used for observability and debugging.
 
 ---

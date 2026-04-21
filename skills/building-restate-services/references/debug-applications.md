@@ -10,7 +10,7 @@ Code changed while an invocation was in flight. The journal no longer matches th
 
 **Unsafe changes:** Reordering, adding, or removing Restate operations (calls, sleeps, `ctx.run`, etc.).
 
-Read https://docs.restate.dev/services/versioning.md
+Read https://docs.restate.dev/services/versioning
 
 ### Service not found / handler not found (RT0011, RT0018)
 

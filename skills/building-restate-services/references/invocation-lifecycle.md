@@ -57,10 +57,10 @@ These primitives are part of application logic, not just operations.
 For detailed SDK-specific API: see the `api-and-pitfalls.md` reference for the detected SDK.
 
 Docs:
-- [Service communication](https://docs.restate.dev/develop/ts/service-communication.md) - Durable RPC, sends, delays
-- [External events](https://docs.restate.dev/develop/ts/external-events.md) - Awakeables, durable promises
-- [Managing invocations](https://docs.restate.dev/services/invocation/managing-invocations.md) - Cancel, kill, pause, resume, attach
-- [Idempotent invocations](https://docs.restate.dev/foundations/invocations.md) - Deduplication
+- Service communication - https://docs.restate.dev/develop/ts/service-communication (or equivalent for other SDK) - Durable RPC, sends, delays
+- External events - https://docs.restate.dev/develop/ts/external-events (or equivalent for other SDK) - Awakeables, durable promises
+- Managing invocations - https://docs.restate.dev/services/invocation/managing-invocations - Cancel, kill, pause, resume, attach
+- Idempotent invocations - https://docs.restate.dev/foundations/invocations - Deduplication
 
 ## Retention
 
@@ -73,7 +73,7 @@ Docs:
 
 After workflow retention expires, shared handlers return errors and state is inaccessible. Mirror critical results to a Virtual Object before the workflow completes.
 
-Docs: [Service configuration](https://docs.restate.dev/services/configuration.md)
+Docs: [Service configuration](https://docs.restate.dev/services/configuration)
 
 ## CLI quick reference
 
@@ -97,5 +97,5 @@ restate kv get <SERVICE> <KEY>
 - [Managing invocations](https://docs.restate.dev/services/invocation/managing-invocations) - Cancel, kill, pause, resume, purge
 - [Kafka invocations](https://docs.restate.dev/services/invocation/kafka) - Event-driven ingestion
 - [Service configuration](https://docs.restate.dev/services/configuration) - Timeouts, retention, retry policies
-- [Admin API](https://docs.restate.dev/references/admin-api) - OpenAPI spec for programmatic control
+- [Admin API](https://docs.restate.dev/admin-api) - OpenAPI spec for programmatic control
 - [SDK clients](https://docs.restate.dev/services/invocation/clients/) - Typed client invocations per SDK

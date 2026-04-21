@@ -223,7 +223,7 @@ current_time = await ctx.time()
 
 ## Timers (durable sleep)
 
-Never use `setTimeout`. Use `ctx.sleep` for durable delays that survive crashes and restarts:
+Never use `asyncio.sleep` or `time.sleep`. Use `ctx.sleep` for durable delays that survive crashes and restarts:
 
 ```python
 # Sleep
