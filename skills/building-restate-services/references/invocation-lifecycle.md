@@ -47,8 +47,8 @@ These primitives are part of application logic, not just operations.
 | I need to... | Use | Not                     | Example use case |
 |---|---|-------------------------|---|
 | Deduplicate external triggers | Idempotency key on send/call | Seen-ID set in state    | Webhook retries, user double-clicks |
-| Wait for a background result | `ctx.attach(invocationId)` | State polling, callback | Frontend waiting for agent response |
-| Cancel a running invocation | `ctx.cancel(id)` or Admin API | Cancel flag + polling   | Chatbot: interrupt agent on new message |
+| Wait for a background result | Attach to the invocation (SDK-specific API) | State polling, callback | Frontend waiting for agent response |
+| Cancel a running invocation | SDK cancel API or Admin API | Cancel flag + polling   | Chatbot: interrupt agent on new message |
 | Bound how long to wait | `.orTimeout({ seconds: N })` | /                       | Deadline on a service call |
 | Pause for external event | Awakeable or Durable Promise | Polling loop            | Human approval, payment callback |
 | Schedule future work | Delayed send | `ctx.sleep()` + send    | Reminders, retry-after, scheduled tasks |

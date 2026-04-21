@@ -128,6 +128,4 @@ async def get_history(ctx: restate.ObjectSharedContext, session_id: str):
 
 ## More Examples
 
-- SDK code: https://github.com/restatedev/sdk-python/tree/main/python/restate/ext/adk
-- Examples: multi-agent, human approval, workflows, parallelization, ... https://github.com/restatedev/ai-examples/tree/main/google-adk/tour-of-agents
-- Advanced examples: tracing, ... https://github.com/restatedev/ai-examples/tree/main/google-adk/examples
+`github.com/restatedev/ai-examples/google-adk/`

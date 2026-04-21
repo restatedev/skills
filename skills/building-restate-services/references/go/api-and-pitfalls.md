@@ -539,8 +539,6 @@ You can do this by setting the environment variable `RESTATE_WORKER__INVOKER__IN
 
 ## Further resources
 
-- **API reference (GoDoc)**: https://pkg.go.dev/github.com/restatedev/sdk-go — `WebFetch` when you need exact function signatures, type params, or a subpackage not covered above. Useful subpackages: `.../encoding`, `.../ingress`, `.../testing`, `.../server` (append to the base URL, e.g. `.../sdk-go/ingress`).
-- **Source code**: https://github.com/restatedev/sdk-go
-- **Restate docs (conceptual / guides)**: use the bundled `restate-docs` MCP server
-- **Examples**: https://github.com/restatedev/examples
-- **AI agent examples**: https://github.com/restatedev/ai-examples
+- For detailed API: use the bundled restate-docs MCP server or GoDoc (https://pkg.go.dev/github.com/restatedev/sdk-go)
+- Examples: https://github.com/restatedev/examples
+- AI agent examples: https://github.com/restatedev/ai-examples

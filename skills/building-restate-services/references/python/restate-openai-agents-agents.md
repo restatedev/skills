@@ -92,6 +92,4 @@ async def get_history(ctx: restate.ObjectSharedContext):
 
 ## More Examples
 
-- SDK code: https://github.com/restatedev/sdk-python/tree/main/python/restate/ext/openai
-- Examples: multi-agent, human approval, workflows, parallelization, ... https://github.com/restatedev/ai-examples/tree/main/openai-agents/tour-of-agents
-- Advanced examples: mcp, rollback, tracing, ... https://github.com/restatedev/ai-examples/tree/main/openai-agents/examples
+`github.com/restatedev/ai-examples/openai-agents/`

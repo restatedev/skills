@@ -1,5 +1,5 @@
 ---
-name: restate
+name: building-restate-services
 description: >
   Build, implement, run, and test Restate durable services, virtual objects,
   workflows, and AI agents across TypeScript, Python, Java, and Go.
@@ -12,8 +12,6 @@ description: >
   or migrating from workflow orchestrators to Restate.
   Use proactively when a project contains restate dependencies in
   package.json, requirements.txt, pyproject.toml, pom.xml, build.gradle, or go.mod.
-metadata:
-   version: "0.0.1"
 ---
 
 # Restate
@@ -41,22 +39,22 @@ Scan the project to determine the SDK and context:
 
 After detecting the SDK, always load the SDK reference:
 
-- `references/<sdk>/api-and-pitfalls.md` - Setup, API patterns, determinism rules, error handling, testing and pitfalls for the detected SDK
+- `references/<sdk>/api-and-pitfalls.md` - Setup, API patterns, determinism rules, error handling, and pitfalls for the detected SDK
 
 ## Context-based references (load when relevant)
 
-| Context                                                                                     | Reference |
-|---------------------------------------------------------------------------------------------|-----------|
-| Design a new application, choose service types                                              | `references/design-and-architecture.md` |
-| Convert from a workflow orchestrator or existing app                                        | `references/translate-to-restate.md` |
+| Context | Reference |
+|---------|-----------|
+| Design a new application, choose service types | `references/design-and-architecture.md` |
+| Convert from a workflow orchestrator or existing app | `references/translate-to-restate.md` |
 | Invoking services, interacting with invocations (cancel, attach, idempotency, sends, Kafka) | `references/invocation-lifecycle.md` |
-| Build AI agent with Vercel AI SDK                                                           | `references/ts/restate-vercel-ai-agents.md` |
-| Build AI agent with OpenAI Agents SDK                                                       | `references/python/restate-openai-agents-agents.md` |
-| Build AI agent with Google ADK                                                              | `references/python/restate-google-adk-agents.md` |
-| Build AI agent with Pydantic AI                                                             | `references/python/restate-pydantic-ai-agents.md` |
-| Debug errors, stuck invocations, journal mismatches                                         | `references/debug-applications.md` |
-| Deployment, server config, Kafka, advanced topics                                           | Use the bundled **restate-docs** MCP server |
-| Code examples and templates                                                                 | `github.com/restatedev/examples`, `github.com/restatedev/ai-examples` |
+| Build AI agent with Vercel AI SDK | `references/ts/restate-vercel-ai-agents.md` |
+| Build AI agent with OpenAI Agents SDK | `references/python/restate-openai-agents-agents.md` |
+| Build AI agent with Google ADK | `references/python/restate-google-adk-agents.md` |
+| Build AI agent with Pydantic AI | `references/python/restate-pydantic-ai-agents.md` |
+| Debug errors, stuck invocations, journal mismatches | `references/debug-applications.md` |
+| Testing, deployment, server config, Kafka, advanced topics | Use the bundled **restate-docs** MCP server |
+| Code examples and templates | `github.com/restatedev/examples`, `github.com/restatedev/ai-examples` |
 
 ## Before-you-design checklist
 
@@ -81,4 +79,4 @@ Before designing any Restate service architecture, check:
 - [ ] AI agents: `maxRetryAttempts` on LLM calls
 - [ ] Virtual Objects: no deadlock cycles
 - [ ] Service registered, tested via curl/UI
-- [ ] Tests written using Testcontainers with `replayAlways` to catch non-determinism (see Testing section in SDK reference)
+- [ ] Tests written using Testcontainers with replay-always mode enabled to catch non-determinism (see Testing section in SDK reference)

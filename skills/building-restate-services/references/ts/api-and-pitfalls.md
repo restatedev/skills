@@ -551,8 +551,6 @@ Use tests also to catch non-determinism bugs that unit tests miss: if handler co
 
 ## Further resources
 
-- **API reference (TSDocs)**: https://restatedev.github.io/sdk-typescript/ — `WebFetch` when you need exact method signatures, generics, or option-bag fields not covered above. Package-level pages live under `/modules/` (e.g. `.../modules/_restatedev_restate_sdk.html`).
-- **Source code**: https://github.com/restatedev/sdk-typescript
-- **Restate docs (conceptual / guides)**: use the bundled `restate-docs` MCP server
-- **Examples**: https://github.com/restatedev/examples
-- **AI agent examples**: https://github.com/restatedev/ai-examples
+- For detailed API: use the TSDocs https://restatedev.github.io/sdk-typescript/ or the bundled restate-docs MCP server
+- Examples: https://github.com/restatedev/examples
+- AI agent examples: https://github.com/restatedev/ai-examples

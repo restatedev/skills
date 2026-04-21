@@ -94,6 +94,4 @@ async def get_history(ctx: restate.ObjectSharedContext) -> dict:
 
 ## More Examples
 
-- SDK code: https://github.com/restatedev/sdk-python/tree/main/python/restate/ext/pydantic
-- Examples: multi-agent, human approval, workflows, parallelization, ... https://github.com/restatedev/ai-examples/tree/main/pydantic-ai/tour-of-agents
-- Advanced examples: https://github.com/restatedev/ai-examples/tree/main/pydantic-ai/examples
+`github.com/restatedev/ai-examples/pydantic-ai/`

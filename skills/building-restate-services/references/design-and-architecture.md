@@ -120,8 +120,8 @@ Restate provides several durable communication mechanisms. All survive crashes a
 - **Durable promise**: Coordination between a Workflow's `run` handler and its interaction handlers.
 
 Common mistakes:
-- Do NOT use a durable promise to cancel an invocation. Use the Admin cancel API (`ctx.cancel(id)`) instead. See `references/lifecycle-and-operations.md`.
-- Do NOT poll a state flag to wait for a result. Use `ctx.attach(invocationId)` to wait for a workflow result.
+- Do NOT use a durable promise to cancel an invocation. Use the SDK cancel API (`ctx.cancel(id)`) instead. See `references/invocation-lifecycle.md`.
+- Do NOT poll a state flag to wait for a result. Attach to the invocation via the SDK's attach API to wait for a workflow result (see the SDK's `api-and-pitfalls.md`).
 - Do NOT use `ctx.sleep()` + send to schedule future work. Use a delayed send directly (it does not block the handler).
 
 For detailed SDK-specific API signatures: use the bundled restate-docs MCP server. For cancellation, idempotency, attach, and retention: see `references/invocation-lifecycle.md`.

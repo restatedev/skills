@@ -122,5 +122,4 @@ const chatAgent = restate.object({
 
 ## More Examples
 
-- SDK code: https://github.com/restatedev/vercel-ai-middleware/tree/main
-- Examples: multi-agent, human approval, workflows, parallelization, ... `github.com/restatedev/ai-examples/vercel-ai/`
+`github.com/restatedev/ai-examples/vercel-ai/`

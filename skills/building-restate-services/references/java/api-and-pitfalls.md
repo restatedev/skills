@@ -27,12 +27,6 @@ Or Docker:
 docker run -it docker.restate.dev/restatedev/restate-cli:latest invocations ls
 ```
 
-### Install Restate CLI
-
-```bash
-brew install restatedev/tap/restate
-```
-
 ### Install SDK
 
 **Gradle (build.gradle.kts):**
@@ -61,7 +55,7 @@ implementation("dev.restate:sdk-java-lambda:2.4.1")
     <!-- For deploying using AWS Lambda -->
     <dependency>
         <groupId>dev.restate</groupId>
-        <artifactId>sdk-java-http</artifactId>
+        <artifactId>sdk-java-lambda</artifactId>
         <version>${restate.version}</version>
     </dependency>
 </dependencies>
@@ -372,9 +366,9 @@ DurableFuture<String> call2 = MyServiceClient.fromContext(ctx).myHandler("reques
 DurableFuture.all(call1, call2).await();
 ```
 
-### Any (first to settle)
+### Select (first to complete)
 
-Returns first future that settles:
+Returns the value of whichever future completes first:
 
 ```java
 boolean res = Select.<Boolean>select().or(a1).or(a2).or(a3).await();
@@ -415,7 +409,7 @@ All handler inputs/outputs and state values use Jackson JSON serialization by de
 
 ### Custom Serde
 
-Implement `Serde<T>` for custom serialization:
+Implement `Serde<T>` for custom serialization when Jackson defaults are not sufficient (binary payloads, non-JSON formats, or types with custom encoding). Pass the serde when declaring a `StateKey`, `DurablePromiseKey`, awakeable, or `ctx.run` call.
 
 ---
 
@@ -506,8 +500,6 @@ You can do this by setting the environment variable `RESTATE_WORKER__INVOKER__IN
 
 ## Further resources
 
-- **API reference (JavaDoc)**: https://restatedev.github.io/sdk-java/javadocs/ — `WebFetch` when you need exact class names, method signatures, or a package not covered above. Useful packages: `dev.restate.sdk`, `dev.restate.sdk.common`, `dev.restate.sdk.annotation`, `dev.restate.sdk.springboot`, `dev.restate.sdk.lambda`, `dev.restate.sdk.http.vertx`, `dev.restate.sdk.testing`, `dev.restate.client`.
-- **Source code**: https://github.com/restatedev/sdk-java
-- **Restate docs (conceptual / guides)**: use the bundled `restate-docs` MCP server
-- **Examples**: https://github.com/restatedev/examples
-- **AI agent examples**: https://github.com/restatedev/ai-examples
+- For detailed API: use the JavaDoc https://restatedev.github.io/sdk-java/javadocs/ or the bundled restate-docs MCP server
+- Examples: https://github.com/restatedev/examples
+- AI agent examples: https://github.com/restatedev/ai-examples
