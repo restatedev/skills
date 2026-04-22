@@ -36,6 +36,12 @@ jobs:
           fi
           rm -rf .docs-restate
 
+      - name: Mirror skills/ to plugins/restatedev/skills/
+        run: |
+          rm -rf plugins/restatedev/skills
+          mkdir -p plugins/restatedev/skills
+          cp -R skills/. plugins/restatedev/skills/
+
       - name: Bump plugin version if skills changed
         run: |
           if git diff --quiet -- skills; then
@@ -43,19 +49,20 @@ jobs:
             exit 0
           fi
 
-          PLUGIN_JSON=.claude-plugin/plugin.json
-          CURRENT=$(jq -r '.version' "$PLUGIN_JSON")
+          CURRENT=$(jq -r '.version' .claude-plugin/plugin.json)
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
           NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
-          jq --arg v "$NEXT" '.version = $v' "$PLUGIN_JSON" > "$PLUGIN_JSON.tmp"
-          mv "$PLUGIN_JSON.tmp" "$PLUGIN_JSON"
+          for PLUGIN_JSON in .claude-plugin/plugin.json .codex-plugin/plugin.json; do
+            jq --arg v "$NEXT" '.version = $v' "$PLUGIN_JSON" > "$PLUGIN_JSON.tmp"
+            mv "$PLUGIN_JSON.tmp" "$PLUGIN_JSON"
+          done
           echo "Bumped $CURRENT -> $NEXT"
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add skills .claude-plugin/plugin.json
+          git add skills plugins/restatedev/skills .claude-plugin/plugin.json .codex-plugin/plugin.json
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0

@@ -1,0 +1,20 @@
+{
+  "name": "restatedev-plugin",
+  "interface": {
+    "displayName": "Restate"
+  },
+  "plugins": [
+    {
+      "name": "restatedev",
+      "source": {
+        "source": "local",
+        "path": "./plugins/restatedev"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}

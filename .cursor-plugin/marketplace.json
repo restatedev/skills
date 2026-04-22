@@ -1,7 +1,8 @@
 {
   "name": "restatedev-plugin",
   "metadata": {
-    "description": "A marketplace of Claude Code plugins for Restate.dev"
+    "description": "A marketplace of Claude Code plugins for Restate.dev",
+    "pluginRoot": "plugins"
   },
   "owner": {
     "name": "Restate"
@@ -9,7 +10,7 @@
   "plugins": [
     {
       "name": "restatedev",
-      "source": "./plugins/restatedev"
+      "source": "restatedev"
     }
   ]
 }
