@@ -3,11 +3,10 @@
   "version": "0.0.2",
   "description": "Restate agent skills for designing, developing, and debugging Restate applications",
   "author": {
-    "name": "Restate",
-    "url": "https://restate.dev"
+    "name": "Restate"
   },
-  "homepage": "https://docs.restate.dev",
-  "repository": "https://github.com/restatedev/restate-agent-skills",
+  "homepage": "https://restate.dev",
+  "repository": "https://github.com/restatedev/skills",
   "license": "MIT",
   "keywords": [
     "restate",
@@ -16,11 +15,6 @@
     "ai-agents",
     "microservices"
   ],
-  "mcpServers": {
-    "restate-docs": {
-      "type": "http",
-      "url": "https://docs.restate.dev/mcp"
-    }
-  },
+  "mcpServers": "./.mcp.json",
   "skills": "./skills/"
 }
