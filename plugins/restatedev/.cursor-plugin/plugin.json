@@ -17,5 +17,5 @@
   ],
   "mcpServers": "./.mcp.json",
   "skills": "./skills/",
-  "logo": "./logo.svg"
+  "logo": "./assets/logo.svg"
 }
