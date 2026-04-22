@@ -45,19 +45,18 @@ jobs:
             exit 0
           fi
 
-          MANIFESTS=(
-            plugins/restatedev/.claude-plugin/plugin.json
-            plugins/restatedev/.codex-plugin/plugin.json
+          for M in \
+            plugins/restatedev/.claude-plugin/plugin.json \
+            plugins/restatedev/.codex-plugin/plugin.json \
             plugins/restatedev/.cursor-plugin/plugin.json
-          )
-          CURRENT=$(jq -r '.version' "${MANIFESTS[0]}")
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
-          NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
-          for M in "${MANIFESTS[@]}"; do
+          do
+            CURRENT=$(jq -r '.version' "$M")
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+            NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
             jq --arg v "$NEXT" '.version = $v' "$M" > "$M.tmp"
             mv "$M.tmp" "$M"
+            echo "$M: $CURRENT -> $NEXT"
           done
-          echo "Bumped $CURRENT -> $NEXT"
 
       - name: Commit and push if changed
         run: |
