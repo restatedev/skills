@@ -21,7 +21,7 @@ Add the marketplace and install the plugin from within Claude Code:
 
 ```
 /plugin marketplace add restatedev/skills
-/plugin install restatedev@restatedev-skills
+/plugin install restatedev@restatedev-plugin
 ```
 
 To verify, run `/plugin` — you should see `restatedev-plugin` listed as enabled.
@@ -30,9 +30,14 @@ To verify, run `/plugin` — you should see `restatedev-plugin` listed as enable
 
 Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root. Follow Cursor's plugin marketplace workflow to install from `restatedev/skills`.
 
-### Codex CLI
+### Codex
 
-Codex CLI reads the manifest at `plugins/restatedev/.codex-plugin/plugin.json`. Follow the Codex CLI plugin install flow to add `restatedev/skills`.
+Add the marketplace: 
+```shell
+codex plugin marketplace add restatedev/skills
+```
+
+Install the plugin through Codex's TUI: launch `codex`, run `/plugins`, find the Restate marketplace, select the Restate plugin, and choose Install. Restart Codex after install completes.
 
 ## What it helps with
 
