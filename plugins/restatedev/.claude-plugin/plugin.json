@@ -1,7 +1,7 @@
 {
   "name": "restatedev",
   "version": "0.0.3",
-  "description": "Restate agent skills for designing, developing, and debugging Restate applications",
+  "description": "Build resilient backend services, AI agents, and workflows with Restate.",
   "author": {
     "name": "Restate"
   },
