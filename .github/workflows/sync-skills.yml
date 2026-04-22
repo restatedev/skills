@@ -24,37 +24,38 @@ jobs:
             restate-plugin/skills
           sparse-checkout-cone-mode: false
 
-      - name: Sync skills/
+      - name: Sync plugins/restatedev/skills/
         run: |
-          rm -rf skills
-          mkdir -p skills
+          DEST=plugins/restatedev/skills
+          rm -rf "$DEST"
+          mkdir -p "$DEST"
           if [ -d ".docs-restate/restate-plugin/skills" ]; then
-            cp -R .docs-restate/restate-plugin/skills/. skills/
+            cp -R .docs-restate/restate-plugin/skills/. "$DEST/"
           else
             echo "Source directory restate-plugin/skills not found in docs-restate@main" >&2
             exit 1
           fi
           rm -rf .docs-restate
 
-      - name: Mirror skills/ to plugins/restatedev/skills/
+      - name: Bump plugin versions if skills changed
         run: |
-          rm -rf plugins/restatedev/skills
-          mkdir -p plugins/restatedev/skills
-          cp -R skills/. plugins/restatedev/skills/
-
-      - name: Bump plugin version if skills changed
-        run: |
-          if git diff --quiet -- skills; then
-            echo "skills/ unchanged — skipping version bump."
+          SKILLS_DIR=plugins/restatedev/skills
+          if git diff --quiet -- "$SKILLS_DIR"; then
+            echo "$SKILLS_DIR unchanged — skipping version bump."
             exit 0
           fi
 
-          CURRENT=$(jq -r '.version' .claude-plugin/plugin.json)
+          MANIFESTS=(
+            plugins/restatedev/.claude-plugin/plugin.json
+            plugins/restatedev/.codex-plugin/plugin.json
+            plugins/restatedev/.cursor-plugin/plugin.json
+          )
+          CURRENT=$(jq -r '.version' "${MANIFESTS[0]}")
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
           NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
-          for PLUGIN_JSON in .claude-plugin/plugin.json .codex-plugin/plugin.json; do
-            jq --arg v "$NEXT" '.version = $v' "$PLUGIN_JSON" > "$PLUGIN_JSON.tmp"
-            mv "$PLUGIN_JSON.tmp" "$PLUGIN_JSON"
+          for M in "${MANIFESTS[@]}"; do
+            jq --arg v "$NEXT" '.version = $v' "$M" > "$M.tmp"
+            mv "$M.tmp" "$M"
           done
           echo "Bumped $CURRENT -> $NEXT"
 
@@ -62,11 +63,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add skills plugins/restatedev/skills .claude-plugin/plugin.json .codex-plugin/plugin.json
+          git add \
+            plugins/restatedev/skills \
+            plugins/restatedev/.claude-plugin/plugin.json \
+            plugins/restatedev/.codex-plugin/plugin.json \
+            plugins/restatedev/.cursor-plugin/plugin.json
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+          VERSION=$(jq -r '.version' plugins/restatedev/.claude-plugin/plugin.json)
           git commit -m "plugin v${VERSION}: sync skills from restatedev/docs-restate@main"
           git push
