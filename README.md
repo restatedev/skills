@@ -1,4 +1,4 @@
-# Restate Coding Agent Plugin
+# Restate Coding Agent Plugin and Skills
 
 > This is an early preview of the Restate Coding Agent Plugin. Please submit feedback (positive and negative) in the [Restate Discord](https://discord.restate.dev), [Slack Community](https://slack.restate.dev), or via issues in this repo.
 
@@ -11,7 +11,7 @@ Packaged for **Claude Code**, **Cursor**, and **Codex**. Works across four Resta
 - **One skill** (`restate`) that activates automatically when you mention Restate concepts or open a Restate template. It detects your SDK from `package.json`, `requirements.txt`/`pyproject.toml`, `pom.xml`/`build.gradle`, or `go.mod` and loads the right reference on demand.
 - **One MCP server** (`restate-docs`) bound to `https://docs.restate.dev/mcp` for searching conceptual guides, deployment docs, server config, and advanced topics.
 
-## Install
+## Install Plugin
 
 The same plugin source ships manifests for Claude Code, Cursor, and Codex — all three live under `plugins/restatedev/` and share one `skills/` tree.
 
@@ -38,6 +38,16 @@ codex plugin marketplace add restatedev/skills
 ```
 
 Install the plugin through Codex's TUI: launch `codex`, run `/plugins`, find the Restate marketplace, select the Restate plugin, and choose Install. Restart Codex after install completes.
+
+### Other coding agents
+
+To add the Restate skills to any coding agent:
+
+```shell
+npx skills add restatedev/skills
+```
+
+You will need to add the MCP server manually in this case. See [`.mcp.json`](plugins/restatedev/.mcp.json).
 
 ## What it helps with
 
