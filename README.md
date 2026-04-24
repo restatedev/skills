@@ -8,7 +8,9 @@ Packaged for **Claude Code**, **Cursor**, and **Codex**. Works across four Resta
 
 ## What this plugin provides
 
-- **One skill** (`restate`) that activates automatically when you mention Restate concepts or open a Restate template. It detects your SDK from `package.json`, `requirements.txt`/`pyproject.toml`, `pom.xml`/`build.gradle`, or `go.mod` and loads the right reference on demand.
+- **Two skills**:
+  - `building-restate-services` — activates automatically when you mention Restate concepts or open a Restate template. Detects your SDK from `package.json`, `requirements.txt`/`pyproject.toml`, `pom.xml`/`build.gradle`, or `go.mod` and loads the right reference on demand.
+  - `learn-restate-by-example` — activates on learning intent ("teach me restate", "restate tutorial", "getting started with restate"). Picks a track based on what you're trying to build, clones the matching starter, and walks you through the stages hands-on.
 - **One MCP server** (`restate-docs`) bound to `https://docs.restate.dev/mcp` for searching conceptual guides, deployment docs, server config, and advanced topics.
 
 ## Install Plugin
@@ -49,9 +51,17 @@ npx skills add restatedev/skills
 
 You will need to add the MCP server manually in this case. See [`.mcp.json`](plugins/restatedev/.mcp.json).
 
+## Learning Restate
+
+Install the plugin, open an empty directory, and type something like:
+
+> teach me restate
+
+The `learn-restate-by-example` skill will ask a couple of questions (what are you trying to build, which language), pick a matching track (Quickstart, Tour of Workflows, Tour of Microservice Orchestration, or an AI agent on-ramp), clone the starter via `restate example ...`, start the Restate server and service, and walk you through the stages one at a time — running the curl commands and pointing at real files in the cloned repo. Once the tour ends, the `building-restate-services` skill takes over for actual implementation.
+
 ## What it helps with
 
-The skill triggers on mentions of Restate, durable execution, virtual objects, workflows, durable agents, and related terms.
+The `building-restate-services` skill triggers on mentions of Restate, durable execution, virtual objects, workflows, durable agents, and related terms.
 
 Once active, it progressively loads references for:
 
@@ -70,6 +80,8 @@ Once active, it progressively loads references for:
 Paths above are relative to `plugins/restatedev/skills/building-restate-services/`.
 
 Deployment, server configuration, Kafka setup, and other advanced topics are handled by querying the bundled `restate-docs` MCP server.
+
+The `learn-restate-by-example` skill is organized as a set of tracks under `plugins/restatedev/skills/learn-restate-by-example/references/`: `tracks.md` (routing), `prerequisites.md`, `quickstart.md`, `tour-of-workflows.md`, `tour-of-orchestration.md`, `ai-agents.md`.
 
 ## Contributing
 
