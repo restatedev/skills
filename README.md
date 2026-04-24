@@ -28,7 +28,7 @@ To verify, run `/plugin` — you should see `restatedev-plugin` listed as enable
 
 ### Cursor
 
-Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root. Follow Cursor's plugin marketplace workflow to install from `restatedev/skills`.
+Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root. Follow Cursor's plugin marketplace workflow to install from `restatedev/skills`. This plugin is not yet available via `/add-plugin`.
 
 ### Codex
 
