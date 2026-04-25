@@ -76,5 +76,19 @@ Before designing any Restate service architecture, check:
 - [ ] Python: no bare `except:`
 - [ ] AI agents: `maxRetryAttempts` on LLM calls
 - [ ] Virtual Objects: no deadlock cycles
+<<<<<<< mintlify/interrupt-regenerate-1776951710
+- [ ] Service registered and invoked via curl or the UI
+
+### Replay test - required on any handler logic change
+
+Any change to handler business logic (new `ctx` operations, reordered steps, new `ctx.run()` blocks, new branches) must be covered by a Testcontainers test with **always-replay** enabled, and that test must pass before declaring the work done. Always-replay forces every journaled step to replay on every invocation, so non-determinism fails the test instead of failing in production on retry.
+
+- TypeScript: `alwaysReplay: true` in `RestateTestEnvironment.start`
+- Python: `always_replay=True` in `restate.test_harness`
+- Java / Go: `RESTATE_WORKER__INVOKER__INACTIVITY_TIMEOUT=0m` on the Restate container
+
+See the Testing section of `references/<sdk>/api-and-pitfalls.md` for the working scaffold.
+=======
 - [ ] Service registered, tested via curl/UI
 - [ ] Tests written using Testcontainers with replay-always mode enabled to catch non-determinism (see Testing section in SDK reference)
+>>>>>>> main
