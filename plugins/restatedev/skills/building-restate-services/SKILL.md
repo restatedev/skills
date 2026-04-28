@@ -66,15 +66,17 @@ Before designing any Restate service architecture, check:
 | Error handling, compensation, sagas?                              | [Error handling guide](https://docs.restate.dev/guides/error-handling), [Sagas guide](https://docs.restate.dev/guides/sagas) |
 | AI agent or LLM calls?                                            | The relevant agent integration reference |
 
-## Verification checklist
+## Always verify before finishing
 
-- [ ] All side effects wrapped in `ctx.run()`
-- [ ] No native random, time, or sleep
-- [ ] Restate concurrency combinators (not native)
+**All checks below are mandatory**.
+
+- [ ] All side effects, external I/O, and DB calls wrapped in `ctx.run()`
+- [ ] No native random, time, sleep, or UUID -- use ctx helpers
+- [ ] Restate concurrency combinators only (no `Promise.all`, `asyncio.gather`/`wait`, `CompletableFuture`, goroutines + channels, `select`)
 - [ ] No ctx operations inside `ctx.run()`
-- [ ] TerminalError for non-retryable failures
+- [ ] `TerminalError` raised for non-retryable failures
 - [ ] Python: no bare `except:`
-- [ ] AI agents: `maxRetryAttempts` on LLM calls
+- [ ] AI agents: set a retry policy for LLM calls
 - [ ] Virtual Objects: no deadlock cycles
 - [ ] Service registered and invoked via curl or the UI
 

@@ -174,11 +174,7 @@ ctx.workflow_send(run, "wf-id", arg="Hi")
 ### Delayed messages
 
 ```python
-ctx.service_send(
-    my_handler,
-    "Hi",
-    send_delay=timedelta(hours=5)
-)
+ctx.service_send(my_handler, "Hi", send_delay=timedelta(hours=5))
 ```
 
 ### Generic calls (String-Based Service/Method Names)
@@ -197,10 +193,14 @@ Wrap all non-deterministic operations (API calls, DB writes, HTTP requests, file
 
 ```python
 # Wrap non-deterministic code in ctx.run
-result = await ctx.run("my-side-effect", lambda: call_external_api("weather", "123"))
+result = await ctx.run(
+    "my-side-effect", lambda: call_external_api("weather", "123")
+)
 
 # Or with typed version for better type safety
-result = await ctx.run_typed("my-side-effect", call_external_api, query="weather", some_id="123")
+result = await ctx.run_typed(
+    "my-side-effect", call_external_api, query="weather", some_id="123"
+)
 ```
 
 - The first argument is a label used for observability and debugging.
@@ -230,11 +230,7 @@ Never use `asyncio.sleep` or `time.sleep`. Use `ctx.sleep` for durable delays th
 await ctx.sleep(timedelta(seconds=30))
 
 # Schedule delayed call (different from sleep + send)
-ctx.service_send(
-    my_handler,
-    "Hi",
-    send_delay=timedelta(hours=5)
-)
+ctx.service_send(my_handler, "Hi", send_delay=timedelta(hours=5))
 ```
 
 No limit on duration, but long sleeps in exclusive handlers block other calls for that key.
@@ -250,7 +246,12 @@ Pause a handler until an external system signals completion.
 awakeable_id, promise = ctx.awakeable(type_hint=str)
 
 # Send ID to external system
-await ctx.run_typed("request_human_review", request_human_review, name=name, awakeable_id=awakeable_id)
+await ctx.run_typed(
+    "request_human_review",
+    request_human_review,
+    name=name,
+    awakeable_id=awakeable_id,
+)
 
 # Wait for result
 review = await promise
@@ -307,8 +308,7 @@ result1 = await asyncio.wait([call1, call2], return_when=asyncio.FIRST_COMPLETED
 # ✅ GOOD
 confirmation = ctx.awakeable(type_hint=str)
 match await restate.select(
-    confirmation=confirmation[1],
-    timeout=ctx.sleep(timedelta(days=1))
+    confirmation=confirmation[1], timeout=ctx.sleep(timedelta(days=1))
 ):
     case ["confirmation", result]:
         print("Got confirmation:", result)
@@ -378,10 +378,13 @@ from restate.serde import Serde
 class Greeting(BaseModel):
     name: str
 
+
 class GreetingResponse(BaseModel):
     result: str
 
+
 greeter = restate.Service("Greeter")
+
 
 @greeter.handler()
 async def greet(ctx: restate.Context, greeting: Greeting) -> GreetingResponse:
