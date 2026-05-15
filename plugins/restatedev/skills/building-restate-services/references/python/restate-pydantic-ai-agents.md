@@ -22,7 +22,7 @@ class WeatherPrompt(BaseModel):
 
 # AGENT
 weather_agent = Agent(
-    "openai:gpt-4o-mini",
+    "openai:gpt-5.4",
     system_prompt="You are a helpful agent that provides weather updates.",
 )
 
@@ -67,7 +67,7 @@ To add session management to the agent:
 
 ```python
 agent = Agent(
-    "openai:gpt-4o-mini",
+    "openai:gpt-5.4",
     system_prompt="You are a helpful assistant.",
 )
 restate_agent = RestateAgent(agent)
