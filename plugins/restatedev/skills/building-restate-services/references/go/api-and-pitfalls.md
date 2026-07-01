@@ -441,7 +441,7 @@ restate.CancelInvocation(ctx, invocationId)
 ### Terminal errors (no retry)
 
 ```go
-return restate.TerminalError(fmt.Errorf("Something went wrong."), 500)
+return restate.ToTerminalError(fmt.Errorf("Something went wrong."), restate.WithErrorCode(500))
 ```
 
 `restate.TerminalError` is a function that wraps an error with an optional HTTP status code. Any other returned error will be retried infinitely with exponential backoff.
