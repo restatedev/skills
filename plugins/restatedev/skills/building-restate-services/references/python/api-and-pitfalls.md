@@ -459,26 +459,52 @@ Use Pydantic models or custom serializers for complex types.
 
 Install: `pip install restate-sdk[harness]`
 
-Tests run against a real Restate Server in Docker via Testcontainers. 
+Tests run against a real Restate Server in Docker via Testcontainers. Use the asynchronous `create_test_harness` API. The older synchronous `test_harness` API is deprecated.
 
 ```python
+import asyncio
+
 import restate
 
-from ..my_service import app
+from ..my_service import my_handler as my_service_handler
+from ..my_service import my_service
+from ..my_virtual_object import my_handler as my_object_handler
+from ..my_virtual_object import my_object
 
-with restate.test_harness(app, always_replay=True) as harness:
-    client = harness.ingress_client()
+app = restate.app([my_service, my_object])
 
-    # Invoke a service handler
-    response = client.post("/MyService/myHandler", json="Hello")
-    assert response.json() == "Hello!"
 
-    # Invoke a Virtual Object handler
-    response = client.post("/MyObject/myKey/myHandler", json="Hello")
-    assert response.json() == "Hello myKey!"
+async def test_handlers() -> None:
+    async with restate.create_test_harness(app, always_replay=True) as harness:
+        # Invoke a Service handler with the typed ingress client
+        response = await harness.client.service_call(my_service_handler, arg="Hello")
+        assert response == "Hello!"
+
+        # Invoke a Virtual Object handler
+        response = await harness.client.object_call(
+            my_object_handler, key="myKey", arg="Hello"
+        )
+        assert response == "Hello myKey!"
+
+
+if __name__ == "__main__":
+    asyncio.run(test_handlers())
 ```
 
-Use tests also to catch non-determinism bugs that unit tests miss: if handler code is non-deterministic, replay produces different results and the test fails.
+The returned harness (`HarnessEnvironment`) provides:
+
+- `harness.client`: typed asynchronous Service, Virtual Object, and Workflow calls
+- `harness.ingress_url`: raw HTTP ingress tests
+- `harness.admin_api_url`: deployment and introspection assertions
+
+Useful options:
+
+- `always_replay=True`: force replay at suspension points to expose non-deterministic handler logic
+- `disable_retries=True`: return retryable failures immediately for focused failure tests
+- `follow_logs=True`: stream Restate Server logs while debugging
+- `restate_image="docker.io/restatedev/restate:<version>"`: pin the server version for reproducible compatibility tests
+
+Any handler business-logic change that adds, removes, reorders, or branches around Restate operations must have an `always_replay=True` test. Use `disable_retries=True` separately when testing retryable failure behavior.
 
 ---
 

@@ -35,6 +35,10 @@ Concrete examples:
 
 The key is the entity identity. All state for a key is isolated from other keys. Exclusive handlers queue per key.
 
+When a call carries a Restate 1.7 scope, the scope is also part of the identity. The same Virtual Object or Workflow key under two different scopes addresses two isolated instances with separate state and queues. Use this intentionally for tenant isolation. Do not add scopes only as labels.
+
+Scopes are also sharding keys. Avoid one constant scope or a very small set of scopes for high-volume workloads because that concentrates scheduling on a small number of partitions. See `references/flow-control-and-scopes.md` before introducing scopes or limit keys.
+
 ### Choosing good keys
 
 Pick keys that distribute load evenly across instances:
@@ -165,8 +169,10 @@ Use a **Virtual Object** keyed by session ID. Store conversation history in K/V 
 ### Framework selection
 
 - **TypeScript**: Vercel AI SDK with `@restatedev/restate-ai` (load `references/ts/restate-vercel-ai-agents.md`)
-- **Python**: OpenAI Agents SDK, Google ADK, or Pydantic AI with Restate wrappers (load the corresponding `references/python/` file)
+- **Python**: OpenAI Agents SDK, Google ADK, Pydantic AI, or LangChain with Restate wrappers (load the corresponding `references/python/` file)
 - **Any language**: Raw Restate SDK with manual LLM API calls wrapped in `ctx.run()`
+
+Load `references/ai-agents.md` for the framework-neutral architecture, durability, cost, state, and testing checklist.
 
 ### Durability requirement
 

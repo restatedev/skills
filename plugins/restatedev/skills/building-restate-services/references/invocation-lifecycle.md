@@ -34,6 +34,8 @@ Each SDK provides a typed client for invoking services from external code (outsi
 
 Common pattern: a web server or frontend calls Restate services via the SDK client or HTTP, then uses attach or polling to get results.
 
+For Restate 1.7 scope-based concurrency limits, scoped invocation identity, and limit keys, load `references/flow-control-and-scopes.md`.
+
 ## Invoking via Kafka
 
 Restate can consume Kafka topics and route messages to handlers. Configure subscriptions via the Admin API or CLI. Each Kafka message becomes a Restate invocation with exactly-once processing guarantees.
@@ -53,6 +55,8 @@ These primitives are part of application logic, not just operations.
 | Pause for external event | Awakeable or Durable Promise | Polling loop            | Human approval, payment callback |
 | Schedule future work | Delayed send | `ctx.sleep()` + send    | Reminders, retry-after, scheduled tasks |
 | Periodic execution | Delayed self-invocation | External cron           | Polling external API, periodic cleanup |
+
+Idempotency keys are scoped. Reusing the same idempotency key under two different scopes starts two separate invocations. Within one scope, the key deduplicates as usual.
 
 For detailed SDK-specific API: see the `api-and-pitfalls.md` reference for the detected SDK.
 
