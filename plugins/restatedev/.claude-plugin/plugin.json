@@ -1,6 +1,6 @@
 {
   "name": "restatedev",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Build resilient backend services, AI agents, and workflows with Restate.",
   "author": {
     "name": "Restate"

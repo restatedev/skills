@@ -121,7 +121,7 @@ response = await ctx.scope("tenant-123").workflow_call(
 )
 
 # Fire-and-forget sends can be scoped too
-ctx.scope("tenant-123").service_send(my_service_handler, arg="Hi")
+ctx.scope("tenant-123").object_send(my_object_handler, key="Mary", arg="Hi")
 ```
 
 ### Java

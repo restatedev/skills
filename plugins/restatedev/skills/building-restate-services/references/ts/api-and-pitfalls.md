@@ -461,7 +461,13 @@ const myService = restate.service({
 Throw `TerminalError` to stop retries and propagate failure permanently:
 
 ```ts
-throw new TerminalError("Something went wrong.", { errorCode: 500 });
+throw new TerminalError("Payment declined.", {
+  errorCode: 402,
+  metadata: {
+    reason: "insufficient_funds",
+    paymentId: "payment-123",
+  },
+});
 ```
 
 
