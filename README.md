@@ -28,7 +28,12 @@ To verify, run `/plugin` — you should see `restatedev-plugin` listed as enable
 
 ### Cursor
 
-Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root. Follow Cursor's plugin marketplace workflow to install from `restatedev/skills`. This plugin is not yet available via `/add-plugin`.
+Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root.
+
+1. Add a user or team marketplace from `https://github.com/restatedev/skills` (use the GitHub URL, not a local folder path).
+2. Open **Customize** in the Cursor sidebar and install the **restatedev** plugin.
+
+This plugin is not listed in the public [Cursor Marketplace](https://cursor.com/marketplace) search yet. For local development, copy `plugins/restatedev/` into `~/.cursor/plugins/local/restatedev/` (real files; symlinks outside that directory are rejected).
 
 ### Codex
 
