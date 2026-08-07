@@ -10,7 +10,8 @@
   "plugins": [
     {
       "name": "restatedev",
-      "source": "restatedev"
+      "source": "restatedev",
+      "description": "Build resilient backend services, AI agents, and workflows with Restate."
     }
   ]
 }
