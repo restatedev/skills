@@ -37,7 +37,7 @@ RESTATE_EXPERIMENTAL_ENABLE_VQUEUES=true
 RESTATE_EXPERIMENTAL_ENABLE_SCOPED_VIRTUAL_OBJECTS=true
 ```
 
-In Restate 1.7, enable flow control only on a fresh cluster with no in-flight invocations. Do not turn it on during an existing cluster upgrade without checking the current Restate upgrade guidance.
+Restate Server 1.7.3 or later automatically migrates an existing cluster's invocations to vqueues when you enable flow control. With Restate Server 1.7.0 through 1.7.2, enable flow control only on a fresh cluster with no in-flight invocations.
 
 ## Choose a scope
 
