@@ -56,6 +56,7 @@ After detecting the SDK, always load the SDK reference:
 | Debug errors, stuck invocations, journal mismatches | `references/debug-applications.md` |
 | Testing, deployment, server config, Kafka, advanced topics | Use the bundled **restate-docs** MCP server |
 | Code examples and templates | `github.com/restatedev/examples`, `github.com/restatedev/ai-examples` |
+| Complete TypeScript agent reference architecture | [restatedev/agent](https://github.com/restatedev/agent) |
 
 ## Before-you-design checklist
 

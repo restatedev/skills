@@ -2,6 +2,10 @@
 
 Load this reference for every AI agent task, then load the framework-specific reference when one exists.
 
+## Reference architecture
+
+Use [restatedev/agent](https://github.com/restatedev/agent) as a complete TypeScript reference when you need to combine durable turns, human approvals, sandboxed tools, subagents, memory, and schedules. Its `Agent` Virtual Object owns the controller state, while `AgentSession` runs the turn and owns the conversation log. This separation lets you steer a running turn and respond to approvals while it works.
+
 ## Choose the durability boundary
 
 Prefer the narrowest integration that journals each expensive or side-effecting step:
