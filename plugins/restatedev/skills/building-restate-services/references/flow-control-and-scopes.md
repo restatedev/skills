@@ -4,7 +4,7 @@ Use this reference when an application needs concurrency limits, multi-tenant fa
 
 ## Availability and status
 
-Flow control is a preview feature introduced with Restate Server 1.7. Its first capability is scope-based concurrency limiting.
+Flow control is enabled by default since Restate Server 1.8. Its first capability is scope-based concurrency limiting. On Restate Server 1.7, it is an experimental opt-in feature.
 
 Minimum SDK versions for the APIs in this reference:
 
@@ -19,7 +19,9 @@ Before using these APIs, verify the project's Restate Server and SDK versions. D
 
 ## Enable flow control
 
-Flow control is disabled by default. Enable protocol v7 and virtual queues:
+On Restate Server 1.8 or later, flow control is enabled by default.
+
+On Restate Server 1.7, enable protocol v7 and virtual queues:
 
 ```toml restate.toml
 experimental-enable-protocol-v7 = true
@@ -98,8 +100,6 @@ const wfResponse = await ctx
   .workflowClient(myWorkflow, "wf-id")
   .run("Hi", restate.rpc.opts({ limitKey: "premium/user42" }));
 
-// Scoped Virtual Object calls need
-// RESTATE_EXPERIMENTAL_ENABLE_SCOPED_VIRTUAL_OBJECTS=true on the server
 const objResponse = await ctx
   .scope("tenant-123")
   .objectClient(myObject, "Mary")
@@ -137,8 +137,6 @@ String wfResponse =
         .call(MyWorkflow::run, request, InvocationOptions.limitKey("premium/user42"))
         .await();
 
-// Scoped Virtual Object calls need
-// RESTATE_EXPERIMENTAL_ENABLE_SCOPED_VIRTUAL_OBJECTS=true on the server
 String objResponse =
     Restate.scope("tenant-123").virtualObject(MyObject.class, objectKey).myHandler(request);
 ```
@@ -154,8 +152,6 @@ svcResponse, err := restate.Service[string](ctx, "MyService", "MyHandler", resta
 wfResponse, err := restate.Workflow[bool](ctx, "MyWorkflow", "my-workflow-id", "Run", restate.WithScope("tenant-123")).
   Request("Hi", restate.WithLimitKey("premium/user42"))
 
-// Scoped Virtual Object calls need
-// RESTATE_EXPERIMENTAL_ENABLE_SCOPED_VIRTUAL_OBJECTS=true on the server
 objResponse, err := restate.Object[string](ctx, "MyObject", "Mary", "MyHandler", restate.WithScope("tenant-123")).
   Request("Hi")
 
@@ -179,8 +175,8 @@ Calls through non-scoped endpoints do not consume scope-based concurrency limits
 - Confirm scope cardinality is high enough to avoid hot partitions.
 - Confirm that separating resource identity by scope is intentional.
 - Confirm every limit key has a scope.
-- Confirm scoped Virtual Object calls have the extra server flag enabled.
+- On Restate Server 1.7, confirm scoped Virtual Object calls have the extra server flag enabled.
 - Add rules before expecting scoped invocations to be limited.
-- Test with a Restate 1.7 server image and the project's actual SDK version.
+- Test with a Restate 1.8 or later server image and the project's actual SDK version.
 
 Full documentation: https://docs.restate.dev/services/flow-control

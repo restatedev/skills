@@ -39,7 +39,7 @@ Restate cannot reach the service endpoint.
 
 The same URI is already registered with different services or handlers.
 
-**Fix:** Use the `--force` flag to override: `restate deployments register --force http://localhost:9080`
+**Fix:** During development, replace the deployment in place with `restate deployments register --force http://localhost:9080`. In-flight invocations continue on the new code. In production, deploy the new version at a new URL instead.
 
 ### HTTP/1.1 required (META0014)
 
@@ -71,33 +71,14 @@ restate invocations cancel <id>
 
 ---
 
-## Essential CLI Commands
+## Investigating with the CLI
+
+Use the Restate CLI (see the Restate CLI section of the skill) to find out what an invocation is doing. A good starting point:
 
 ```bash
-# Deployment management
-restate deployments register http://localhost:9080 [--force]
-restate deployments list
-
-# Invocation inspection
-restate invocations list [--status backing-off] [--service MyService]
-restate invocations describe <id>
-
-# Invocation lifecycle
-restate invocations cancel <id|service|service/handler>
-restate invocations kill <id>
-restate invocations pause <id>
-restate invocations resume <id> [--deployment latest]
-
-# SQL introspection
-restate sql --json "SELECT * FROM sys_invocation WHERE target_service_name = 'MyService'"
-
-# State inspection
-restate kv get <SERVICE> <KEY>
-restate kv edit <SERVICE> <KEY>
+restate invocations list --status backing-off,paused --json   # failing or stopped invocations
+restate invocations describe <id> --json                      # status, deployment, retries, last failure
+restate invocations journal <id> --json                       # the steps it recorded
 ```
 
----
-
-## Admin API
-
-Base URL: `http://localhost:9070/openapi`
+For anything else, run `restate search <what you want to do>` or `restate <command> --help` instead of guessing.

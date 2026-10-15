@@ -34,7 +34,7 @@ Each SDK provides a typed client for invoking services from external code (outsi
 
 Common pattern: a web server or frontend calls Restate services via the SDK client or HTTP, then uses attach or polling to get results.
 
-For Restate 1.7 scope-based concurrency limits, scoped invocation identity, and limit keys, load `references/flow-control-and-scopes.md`.
+For scope-based concurrency limits, scoped invocation identity, and limit keys, load `references/flow-control-and-scopes.md`.
 
 ## Invoking via Kafka
 
@@ -79,20 +79,11 @@ After workflow retention expires, shared handlers return errors and state is ina
 
 Docs: [Service configuration](https://docs.restate.dev/services/configuration)
 
-## CLI quick reference
+## Managing invocations with the CLI
 
-```bash
-restate deployments register http://localhost:9080 [--force]
-restate deployments list
-restate invocations list [--status backing-off] [--service MyService]
-restate invocations describe <id>
-restate invocations cancel <id|service|service/handler>
-restate invocations kill <id>          # Last resort, no compensation
-restate invocations pause <id>
-restate invocations resume <id>
-restate sql "SELECT * FROM sys_invocation WHERE target_service_name = 'MyService'"
-restate kv get <SERVICE> <KEY>
-```
+Use the Restate CLI (see the Restate CLI section of the skill) to list, describe, cancel, kill, pause, resume, purge or restart invocations.
+Run `restate invocations --help` for the available commands, and `restate invocations <command> --help` for how to select invocations and the examples.
+Prefer `cancel` over `kill`: kill stops the invocation immediately, without running compensations.
 
 ## Key documentation
 

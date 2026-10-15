@@ -54,9 +54,28 @@ After detecting the SDK, always load the SDK reference:
 | Build AI agent with Pydantic AI | `references/python/restate-pydantic-ai-agents.md` |
 | Build AI agent with LangChain or LangGraph | `references/python/restate-langchain-agents.md` |
 | Debug errors, stuck invocations, journal mismatches | `references/debug-applications.md` |
+| Register deployments, inspect or manage invocations, read or edit state, query the server | [Restate CLI](#restate-cli) |
 | Testing, deployment, server config, Kafka, advanced topics | Use the bundled **restate-docs** MCP server |
-| Code examples and templates | `github.com/restatedev/examples`, `github.com/restatedev/ai-examples` |
+| Code examples and templates | `restate example --list --json`, `github.com/restatedev/examples`, `github.com/restatedev/ai-examples` |
 | Complete TypeScript agent reference architecture | [restatedev/agent](https://github.com/restatedev/agent) |
+
+## Restate CLI
+
+Use the `restate` CLI to operate a running Restate Server: register deployments, inspect and manage invocations, read and edit state, and query the server's internals with SQL.
+The CLI describes itself, so ask it what to run instead of guessing commands or flags:
+
+- `restate --help` explains how agents should use the CLI. `restate <command> --help` shows the flags of a command, with examples.
+- `restate search <what you want to do>` finds the command, flag or SQL table for a task, e.g. `restate search retry a failed invocation`.
+- `restate sql --help` lists the SQL introspection tables, `restate sql describe <table>` shows their columns.
+- `restate openapi` prints the Admin API spec, for anything the commands don't cover.
+
+When running it:
+
+- Always pass `--json`. The output, errors included, is a single JSON document on stdout, and the command never prompts. Errors carry a `kind` and often `next_steps` with the commands to run next.
+- Commands that change something (register, cancel, kill, purge, state edits, ...) don't apply the change with `--json` alone: they print the planned changes with `"applied": false` and an `apply_command`, and exit with code 3. Show the plan to the user, and only then run it again with `--yes`. Use `--dry-run` to preview without applying.
+- Run `restate whoami --json` to check which server the CLI talks to. By default it's the local server (admin API on `localhost:9070`).
+
+These features require CLI version 1.8 or later. If `restate search` doesn't exist, ask the user to upgrade the CLI.
 
 ## Before-you-design checklist
 

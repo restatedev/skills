@@ -35,7 +35,7 @@ Concrete examples:
 
 The key is the entity identity. All state for a key is isolated from other keys. Exclusive handlers queue per key.
 
-When a call carries a Restate 1.7 scope, the scope is also part of the identity. The same Virtual Object or Workflow key under two different scopes addresses two isolated instances with separate state and queues. Use this intentionally for tenant isolation. Do not add scopes only as labels.
+When a call carries a scope, the scope is also part of the identity. The same Virtual Object or Workflow key under two different scopes addresses two isolated instances with separate state and queues. Use this intentionally for tenant isolation. Do not add scopes only as labels.
 
 Scopes are also sharding keys. Avoid one constant scope or a very small set of scopes for high-volume workloads because that concentrates scheduling on a small number of partitions. See `references/flow-control-and-scopes.md` before introducing scopes or limit keys.
 

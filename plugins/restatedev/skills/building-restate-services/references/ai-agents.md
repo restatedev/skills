@@ -39,7 +39,7 @@ Do not call an unsupported agent framework directly from replayable handler code
 - Set a bounded retry policy for model calls and expensive tools. Do not inherit infinite retries for paid APIs without an explicit decision.
 - Convert invalid input, denied actions, unsupported requests, and other permanent failures to terminal errors.
 - Use idempotency keys at ingress when a caller may resubmit the same agent job.
-- Use Restate 1.7 scopes and limit keys for tenant, team, or user concurrency budgets. Load `references/flow-control-and-scopes.md` before choosing those identities.
+- Use scopes and limit keys for tenant, team, or user concurrency budgets. Load `references/flow-control-and-scopes.md` before choosing those identities.
 - Add a maximum agent-step count or another termination condition so a model cannot loop indefinitely.
 
 ## Manage sessions deliberately
