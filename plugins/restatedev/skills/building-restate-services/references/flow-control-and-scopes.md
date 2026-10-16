@@ -45,13 +45,15 @@ Restate Server 1.7.3 or later automatically migrates an existing cluster's invoc
 
 A scope is both a concurrency namespace and part of resource identity.
 
-Good scope candidates include a tenant, organization, downstream dependency, or class of expensive work. Choose a scope with enough cardinality to distribute scheduling across partitions.
+Good scope candidates include a tenant, organization, downstream dependency, or class of expensive work. Choose a scope with enough cardinality to distribute scheduling across partitions: every invocation of a scope, with its journal, state and locks, is processed by one partition, so one partition processor bounds a scope's throughput.
 
 A scope changes identity in these ways:
 
 - The same idempotency key deduplicates independently in each scope.
 - The same Virtual Object key in two scopes addresses two separate objects with separate state and queues.
 - The same Workflow key in two scopes addresses two separate workflow instances.
+
+A call without a scope reaches the unscoped Virtual Object. Scope an object when it belongs to the scope, such as a per-tenant cart, and its work should count against that scope's budget. Keep it unscoped when the key cardinality is high and no flow control is needed. Do not mix scoped and unscoped calls to the same key unless separate objects are intended.
 
 A scope must be 1 to 36 characters and contain only `a-z`, `A-Z`, `0-9`, `_`, `.`, or `-`.
 
@@ -62,6 +64,8 @@ A limit key subdivides concurrency within a scope into one or two hierarchical l
 An invocation with `team/user` consumes capacity from the scope, `team`, and `team/user` limits at the same time. The strictest matching limit determines whether it can run.
 
 Limit keys affect concurrency only. They are not part of invocation, Virtual Object, or Workflow identity. A limit key always requires a scope.
+
+Calls to one Virtual Object instance with the same limit key run in arrival order. Across different limit keys the order is not guaranteed, because each limit key has its own queue.
 
 ## Configure concurrency rules
 

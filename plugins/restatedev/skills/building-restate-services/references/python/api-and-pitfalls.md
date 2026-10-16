@@ -67,7 +67,7 @@ Start the service with `uv run app.py`, then register and invoke:
 
 ```shell
 restate deployments register http://localhost:9080
-curl localhost:8080/MyService/myHandler --json '"World"'
+curl localhost:8080/restate/call/MyService/myHandler --json '"World"'
 ```
 
 ---

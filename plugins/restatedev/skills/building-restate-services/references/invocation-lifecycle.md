@@ -8,22 +8,22 @@ All Restate services are reachable via HTTP through the Restate ingress (default
 
 ```bash
 # Service handler
-curl localhost:8080/MyService/myHandler --json '"input"'
+curl localhost:8080/restate/call/MyService/myHandler --json '"input"'
 
 # Virtual Object handler (keyed by entity ID)
-curl localhost:8080/MyObject/myKey/myHandler --json '"input"'
+curl localhost:8080/restate/call/MyObject/myKey/myHandler --json '"input"'
 
 # Workflow run handler (keyed by workflow ID)
-curl localhost:8080/MyWorkflow/myWorkflowId/run --json '"input"'
+curl localhost:8080/restate/call/MyWorkflow/myWorkflowId/run --json '"input"'
 
 # Fire-and-forget (returns immediately, invocation runs in background)
-curl localhost:8080/MyService/myHandler/send --json '"input"'
+curl localhost:8080/restate/send/MyService/myHandler --json '"input"'
 
 # Delayed invocation (executes after delay)
-curl "localhost:8080/MyService/myHandler/send?delay=10s" --json '"input"'
+curl "localhost:8080/restate/send/MyService/myHandler?delay=10s" --json '"input"'
 
 # With idempotency key (deduplicates for 24h by default)
-curl localhost:8080/MyService/myHandler -H 'idempotency-key: my-unique-key' --json '"input"'
+curl localhost:8080/restate/call/MyService/myHandler -H 'idempotency-key: my-unique-key' --json '"input"'
 ```
 
 For the OpenAPI spec of registered services: `curl localhost:9070/services/MyService/openapi`

@@ -84,7 +84,7 @@ Start the service, then register and invoke:
 restate deployments register http://localhost:9080
 
 # Invoke the handler
-curl localhost:8080/MyService/MyHandler --json '"World"'
+curl localhost:8080/restate/call/MyService/MyHandler --json '"World"'
 ```
 
 ---
