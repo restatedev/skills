@@ -1,5 +1,11 @@
 # TypeScript SDK Reference: API and Pitfalls
 
+## When to use Durable Coroutines
+
+Use the standard SDK for sequential workflows, parallel individual durable steps, and concurrent calls to other Restate handlers. Use Durable Coroutines when each concurrent routine needs multiple durable steps within one invocation, such as parallel tools with guardrails or subagents sharing a sandbox connection.
+
+If the project uses `@restatedev/restate-sdk-gen`, or you choose this model, load [Durable Coroutines](durable-coroutines.md). The `ctx` and `RestatePromise` examples below use the standard SDK; coroutine bodies use the APIs in that reference. Preserve the project's existing SDK choice unless the task requires changing it.
+
 ## Setup
 
 ### Install Restate Server
@@ -80,7 +86,7 @@ curl localhost:8080/restate/call/MyService/greet --json '"World"'
 ## Core Concepts
 
 - Restate provides durable execution: if a handler crashes or the process restarts, Restate replays the handler from the last completed step, not from scratch.
-- All handlers receive a Context object (`ctx`) as their first argument. Use ctx methods for all I/O and side effects.
+- Standard SDK handlers receive a Context object (`ctx`) as their first argument. Use ctx methods for all I/O and side effects.
 - Handlers take one optional JSON-serializable input parameter and return one JSON-serializable output.
 
 ---
@@ -304,7 +310,7 @@ await ctx.promise<string>("review").resolve(review);
 
 ## Concurrency
 
-Always use `RestatePromise` (imported from `@restatedev/restate-sdk`), NOT native `Promise`:
+In standard SDK handlers, use `RestatePromise` (imported from `@restatedev/restate-sdk`), not native `Promise`, to combine durable operations. For durable coroutines, use the coroutine combinators instead:
 
 ```ts
 import { RestatePromise } from "@restatedev/restate-sdk";
@@ -504,7 +510,7 @@ await restateClient
 
 ## TypeScript-Specific Pitfalls
 
-- **Use `RestatePromise`**, NOT native `Promise`. Native promises break deterministic replay.
+- **Use SDK concurrency combinators**: `RestatePromise` for standard SDK handlers, or coroutine combinators for coroutines. Do not coordinate durable operations with native `Promise` combinators.
 - **Return values from `ctx.run()` must be JSON-serializable** (no functions, circular references, or class instances without custom serde).
 - **Never use `setTimeout`, `Math.random()`, `Date.now()`, or `new Date()`** -- use Restate Context actions instead.
 - **Never use global mutable variables for state** -- use Restate's K/V store for durable state.

@@ -138,7 +138,9 @@ Execute a sequence of steps. Track completed steps. On `TerminalError`, execute 
 
 ### Fan-out / fan-in
 
-Launch parallel work using Restate concurrency combinators (`CombineablePromise.all` in TypeScript, `restate.gather` in Python, `DurableFuture.all` in Java, `restate.Wait` in Go). Each parallel branch is a durable service call. Collect results after all branches complete.
+Launch parallel work using Restate concurrency combinators (`RestatePromise.all` in TypeScript, `restate.gather` in Python, `DurableFuture.all` in Java, `restate.Wait` in Go). Parallel branches can be durable service calls or individual durable steps. Collect results after all branches complete.
+
+For TypeScript branches with multiple durable steps that should run in the same invocation, use [durable coroutines](ts/durable-coroutines.md). For example, each parallel agent tool can run a guardrail and then an API call as separate durable steps while sharing local clients with other tools.
 
 ### Cron (self-scheduling)
 
