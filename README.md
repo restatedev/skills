@@ -24,16 +24,18 @@ Add the marketplace and install the plugin from within Claude Code:
 /plugin install restatedev@restatedev-plugin
 ```
 
-To verify, run `/plugin` — you should see `restatedev-plugin` listed as enabled.
+`/plugin install` opens the plugin details, where you choose the installation scope. To verify, run `/plugin` — you should see `restatedev-plugin` listed as enabled.
+
+Claude Code does not auto-update third-party marketplaces by default. To receive skill updates automatically, enable auto-update for `restatedev-plugin` in the **Marketplaces** tab of `/plugin`.
 
 ### Cursor
 
 Cursor discovers the plugin via `.cursor-plugin/marketplace.json` at the repo root.
 
-1. Add a user or team marketplace from `https://github.com/restatedev/skills` (use the GitHub URL, not a local folder path).
-2. Open **Customize** in the Cursor sidebar and install the **restatedev** plugin.
+1. On a Teams or Enterprise plan, an admin imports the marketplace from the Cursor dashboard: **Plugins & MCPs** → **Import from Repo**, with `https://github.com/restatedev/skills` (use the GitHub URL, not a local folder path).
+2. Open **Customize** in the Cursor sidebar, install the **restatedev** plugin, and choose the project or user scope.
 
-This plugin is not listed in the public [Cursor Marketplace](https://cursor.com/marketplace) search yet. For local development, copy `plugins/restatedev/` into `~/.cursor/plugins/local/restatedev/` (real files; symlinks outside that directory are rejected).
+This plugin is not listed in the public [Cursor Marketplace](https://cursor.com/marketplace) search yet. For local development, copy `plugins/restatedev/` into `~/.cursor/plugins/local/restatedev/` (real files; symlinks outside that directory are rejected) and run **Developer: Reload Window**. On Enterprise plans, an admin must enable **Allow Local Plugin Imports** first.
 
 ### Codex
 
@@ -42,7 +44,7 @@ Add the marketplace:
 codex plugin marketplace add restatedev/skills
 ```
 
-Install the plugin through Codex's TUI: launch `codex`, run `/plugins`, find the Restate marketplace, select the Restate plugin, and choose Install. Restart Codex after install completes.
+Install the plugin through Codex's TUI: launch `codex`, run `/plugins`, find the Restate marketplace, select the Restate plugin, and choose Install. Start a new Codex session after the installation completes.
 
 ### Other coding agents
 
@@ -63,20 +65,24 @@ Once active, it progressively loads references for:
 | Topic                                                                                        | Reference |
 |----------------------------------------------------------------------------------------------|---|
 | SDK setup, API patterns, determinism rules, error handling, testing, pitfalls                | `references/<sdk>/api-and-pitfalls.md` |
+| Durable Coroutines with the TypeScript Gen SDK                                               | `references/ts/durable-coroutines.md` |
 | Designing a new Restate application, picking service types                                   | `references/design-and-architecture.md` |
+| Concurrency limits, multi-tenant fairness, cost controls, scopes, limit keys                 | `references/flow-control-and-scopes.md` |
 | Migrating to Restate from other workflow orchestrators or general microservices applications | `references/translate-to-restate.md` |
 | Invoking, cancelling, attaching, idempotency, sends, Kafka                                   | `references/invocation-lifecycle.md` |
 | Debugging stuck invocations and journal mismatches                                           | `references/debug-applications.md` |
+| Designing AI agents, choosing a durability boundary, unsupported LLM or agent SDKs           | `references/ai-agents.md` |
 | AI agents with Vercel AI SDK (TS)                                                            | `references/ts/restate-vercel-ai-agents.md` |
 | AI agents with OpenAI Agents SDK (Python)                                                    | `references/python/restate-openai-agents-agents.md` |
 | AI agents with Google ADK (Python)                                                           | `references/python/restate-google-adk-agents.md` |
 | AI agents with Pydantic AI (Python)                                                          | `references/python/restate-pydantic-ai-agents.md` |
+| AI agents with LangChain or LangGraph (Python)                                               | `references/python/restate-langchain-agents.md` |
 
 Paths above are relative to `plugins/restatedev/skills/building-restate-services/`.
 
-Deployment, server configuration, Kafka setup, and other advanced topics are handled by querying the bundled `restate-docs` MCP server.
+The skill also instructs the agent to use the `restate` CLI (version 1.8 or later) to register deployments, inspect and manage invocations, read and edit state, and query the server with SQL.
 
-The `learn-restate-by-example` skill is organized as a set of tracks under `plugins/restatedev/skills/learn-restate-by-example/references/`: `tracks.md` (routing), `prerequisites.md`, `quickstart.md`, `tour-of-workflows.md`, `tour-of-orchestration.md`, `ai-agents.md`.
+For deployment, server configuration, Kafka setup, and other advanced topics, the agent queries the bundled `restate-docs` MCP server.
 
 ## Contributing
 
@@ -87,7 +93,7 @@ claude --plugin-dir /path/to/this/repo/plugins/restatedev
 
 For Cursor and Codex CLI, point their respective local-plugin flags at the same `plugins/restatedev/` directory.
 
-> **Note:** The `plugins/restatedev/skills/` folder in this repo is synced automatically every 12 hours from [`restatedev/docs-restate`](https://github.com/restatedev/docs-restate/tree/main/restate-plugin/src), where the skills are authored, tested, and updated. Edits made directly here will be overwritten — contribute changes upstream in `docs-restate` instead. Reference files live under `plugins/restatedev/skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
+> **Note:** The skills are authored and tested in [`restatedev/docs-restate`](https://github.com/restatedev/docs-restate/tree/main/restate-plugin/src) under `restate-plugin/src/`. A generator produces `restate-plugin/skills/` from those sources, and a GitHub Actions workflow copies that folder into `plugins/restatedev/skills/` in this repo every 12 hours. Edits made directly here will be overwritten — contribute changes to `restate-plugin/src/` in `docs-restate` instead. Reference files live under `plugins/restatedev/skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
 
 ## Links
 
