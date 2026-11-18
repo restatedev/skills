@@ -67,6 +67,21 @@ jobs:
             echo "Source directory plugins/restate-agents/skills not found in agentlib@${{ steps.agentlib.outputs.tag }}" >&2
             exit 1
           fi
+
+          # agentlib ships its agent skill as `restate-agents`. Publish it as
+          # `restate-agentlib` to keep the `restate-agents` name free for a later
+          # skill. Rename the folder, the frontmatter name, and backticked mentions
+          # such as the cross-reference in restate-gen-sdk.
+          if [ -d "$AGENTLIB_SRC/restate-agents" ]; then
+            mv "$AGENTLIB_SRC/restate-agents" "$AGENTLIB_SRC/restate-agentlib"
+            find "$AGENTLIB_SRC" -name '*.md' -exec perl -pi -e \
+              's/^name: restate-agents$/name: restate-agentlib/; s/`restate-agents`/`restate-agentlib`/g' {} +
+            if ! grep -q '^name: restate-agentlib$' "$AGENTLIB_SRC/restate-agentlib/SKILL.md"; then
+              echo "Could not rename the restate-agents skill: unexpected SKILL.md frontmatter" >&2
+              exit 1
+            fi
+          fi
+
           # Fail instead of silently overwriting a docs-restate skill with the same name.
           for SKILL in "$AGENTLIB_SRC"/*/; do
             NAME=$(basename "$SKILL")

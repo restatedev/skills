@@ -9,7 +9,7 @@ Packaged for **Claude Code**, **Cursor**, and **Codex**. Works across four Resta
 ## What this plugin provides
 
 - **Skill**: `building-restate-services` — activates automatically when you mention Restate concepts or open a Restate template. Detects your SDK from `package.json`, `requirements.txt`/`pyproject.toml`, `pom.xml`/`build.gradle`, or `go.mod` and loads the right reference on demand.
-- **Skills from [`restatedev/agentlib`](https://github.com/restatedev/agentlib)**: `restate-agents` for building durable AI agents with `@restatedev/agentlib`, and `restate-gen-sdk` for building services with the generator-based TypeScript SDK (`@restatedev/restate-sdk-gen`).
+- **Skills from [`restatedev/agentlib`](https://github.com/restatedev/agentlib)**: `restate-agentlib` for building durable AI agents with `@restatedev/agentlib`, and `restate-gen-sdk` for building services with the generator-based TypeScript SDK (`@restatedev/restate-sdk-gen`).
 - **One MCP server** (`restate-docs`) bound to `https://docs.restate.dev/mcp` for searching conceptual guides, deployment docs, server config, and advanced topics.
 
 ## Install Plugin
@@ -85,7 +85,7 @@ The skill also instructs the agent to use the `restate` CLI (version 1.8 or late
 
 For deployment, server configuration, Kafka setup, and other advanced topics, the agent queries the bundled `restate-docs` MCP server.
 
-The `restate-agents` and `restate-gen-sdk` skills come from the latest [`restatedev/agentlib`](https://github.com/restatedev/agentlib) release, so they match the `@restatedev/agentlib` version you install from npm. See the agentlib repository for what they cover.
+The `restate-agentlib` and `restate-gen-sdk` skills come from the latest [`restatedev/agentlib`](https://github.com/restatedev/agentlib) release, so they match the `@restatedev/agentlib` version you install from npm. See the agentlib repository for what they cover.
 
 ## Contributing
 
@@ -98,7 +98,7 @@ For Cursor and Codex CLI, point their respective local-plugin flags at the same 
 
 > **Note:** The skills are authored and tested in [`restatedev/docs-restate`](https://github.com/restatedev/docs-restate/tree/main/restate-plugin/src) under `restate-plugin/src/`. A generator produces `restate-plugin/skills/` from those sources, and a GitHub Actions workflow copies that folder into `plugins/restatedev/skills/` in this repo every 12 hours. Edits made directly here will be overwritten — contribute changes to `restate-plugin/src/` in `docs-restate` instead. Reference files live under `plugins/restatedev/skills/building-restate-services/references/`. When adding a new topic, link it from `SKILL.md`'s context table so the skill knows when to load it.
 >
-> The same workflow copies `plugins/restate-agents/skills/` from the latest [`restatedev/agentlib`](https://github.com/restatedev/agentlib) release into `plugins/restatedev/skills/`. Contribute changes to the `restate-agents` and `restate-gen-sdk` skills in `agentlib`. The workflow fails if `docs-restate` and `agentlib` both define a skill with the same name.
+> The same workflow copies `plugins/restate-agents/skills/` from the latest [`restatedev/agentlib`](https://github.com/restatedev/agentlib) release into `plugins/restatedev/skills/`. It renames agentlib's `restate-agents` skill to `restate-agentlib` on the way. Contribute changes to the `restate-agentlib` and `restate-gen-sdk` skills in `agentlib`, where the first one is named `restate-agents`. The workflow fails if `docs-restate` and `agentlib` both define a skill with the same name.
 
 ## Links
 
