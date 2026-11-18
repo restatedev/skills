@@ -1,4 +1,4 @@
-name: Sync skills from docs-restate
+name: Sync skills from docs-restate and agentlib
 
 on:
   schedule:
@@ -24,23 +24,81 @@ jobs:
             restate-plugin/skills
           sparse-checkout-cone-mode: false
 
+      # Sync the agentlib skill from the latest release, not main, so the skill
+      # matches the @restatedev/agentlib version that users install from npm.
+      - name: Resolve latest agentlib release
+        id: agentlib
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(gh release view --repo restatedev/agentlib --json tagName --jq .tagName)
+          if [ -z "$TAG" ]; then
+            echo "Could not resolve the latest restatedev/agentlib release" >&2
+            exit 1
+          fi
+          echo "Latest agentlib release: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout agentlib
+        uses: actions/checkout@v4
+        with:
+          repository: restatedev/agentlib
+          ref: ${{ steps.agentlib.outputs.tag }}
+          path: .agentlib
+          sparse-checkout: |
+            plugins/restate-agents/skills
+          sparse-checkout-cone-mode: false
+
       - name: Sync plugins/restatedev/skills/
         run: |
           DEST=plugins/restatedev/skills
           rm -rf "$DEST"
           mkdir -p "$DEST"
+
           if [ -d ".docs-restate/restate-plugin/skills" ]; then
             cp -R .docs-restate/restate-plugin/skills/. "$DEST/"
           else
             echo "Source directory restate-plugin/skills not found in docs-restate@main" >&2
             exit 1
           fi
-          rm -rf .docs-restate
+
+          AGENTLIB_SRC=.agentlib/plugins/restate-agents/skills
+          if [ ! -d "$AGENTLIB_SRC" ]; then
+            echo "Source directory plugins/restate-agents/skills not found in agentlib@${{ steps.agentlib.outputs.tag }}" >&2
+            exit 1
+          fi
+
+          # agentlib ships its agent skill as `restate-agents`. Publish it as
+          # `restate-agentlib` to keep the `restate-agents` name free for a later
+          # skill. Rename the folder, the frontmatter name, and backticked mentions
+          # such as the cross-reference in restate-gen-sdk.
+          if [ -d "$AGENTLIB_SRC/restate-agents" ]; then
+            mv "$AGENTLIB_SRC/restate-agents" "$AGENTLIB_SRC/restate-agentlib"
+            find "$AGENTLIB_SRC" -name '*.md' -exec perl -pi -e \
+              's/^name: restate-agents$/name: restate-agentlib/; s/`restate-agents`/`restate-agentlib`/g' {} +
+            if ! grep -q '^name: restate-agentlib$' "$AGENTLIB_SRC/restate-agentlib/SKILL.md"; then
+              echo "Could not rename the restate-agents skill: unexpected SKILL.md frontmatter" >&2
+              exit 1
+            fi
+          fi
+
+          # Fail instead of silently overwriting a docs-restate skill with the same name.
+          for SKILL in "$AGENTLIB_SRC"/*/; do
+            NAME=$(basename "$SKILL")
+            if [ -e "$DEST/$NAME" ]; then
+              echo "Skill '$NAME' exists in both docs-restate and agentlib" >&2
+              exit 1
+            fi
+          done
+          cp -R "$AGENTLIB_SRC"/. "$DEST/"
+
+          rm -rf .docs-restate .agentlib
 
       - name: Bump plugin versions if skills changed
         run: |
           SKILLS_DIR=plugins/restatedev/skills
-          if git diff --quiet -- "$SKILLS_DIR"; then
+          # git status also reports untracked files, such as a newly added skill.
+          if [ -z "$(git status --porcelain -- "$SKILLS_DIR")" ]; then
             echo "$SKILLS_DIR unchanged — skipping version bump."
             exit 0
           fi
@@ -72,5 +130,5 @@ jobs:
             exit 0
           fi
           VERSION=$(jq -r '.version' plugins/restatedev/.claude-plugin/plugin.json)
-          git commit -m "plugin v${VERSION}: sync skills from restatedev/docs-restate@main"
+          git commit -m "plugin v${VERSION}: sync skills from restatedev/docs-restate@main and restatedev/agentlib@${{ steps.agentlib.outputs.tag }}"
           git push
