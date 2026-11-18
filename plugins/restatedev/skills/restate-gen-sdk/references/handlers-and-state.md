@@ -1,0 +1,138 @@
+# Handlers and state
+
+## Services
+
+A service is a named group of generator handlers. A handler takes zero or one
+input and returns a JSON-serializable value.
+
+```ts
+import * as restate from "@restatedev/restate-sdk-gen";
+
+export const pricing = restate.service({
+  name: "Pricing",
+  handlers: {
+    *quote(sku: string) {
+      return yield* restate.run(() => fetchPrice(sku), {name: "fetch price"});
+    },
+  },
+});
+```
+
+Call it over HTTP at `POST <ingress>/Pricing/quote` with a JSON body.
+
+## Validated input and output
+
+Wrap a handler in `restate.schemas` to validate with any Standard Schema
+library (Zod, Valibot, ArkType). The schemas also appear in Restate's UI and
+discovery. Use an object input with field defaults so the request editor
+prefills valid JSON, including quotes around string values.
+
+```ts
+import {z} from "zod";
+
+export const triage = restate.service({
+  name: "Triage",
+  handlers: {
+    classify: restate.schemas(
+      {
+        input: z.object({message: z.string().default("I was charged twice.")}),
+        output: z.object({category: z.enum(["billing", "other"])}),
+      },
+      function* ({message}) {
+        return {category: message.includes("charged") ? "billing" : "other"} as const;
+      },
+    ),
+  },
+});
+```
+
+`restate.schemas` needs both `input` and `output`. For a handler without
+input, use `input: z.void()`, so callers pass no argument, or skip schemas
+and write `*name()`.
+
+## Virtual objects: state per key
+
+An object is addressed by a key (`/ChatSession/bob/ask`). Restate runs
+exclusive handlers for one key one at a time, so read-modify-write needs no
+locks. State lives in Restate and is available on every call for that key.
+
+```ts
+export const counter = restate.object({
+  name: "Counter",
+  handlers: {
+    *add(delta: number) {
+      const current = (yield* restate.state().get<number>("count")) ?? 0;
+      restate.state().set("count", current + delta); // sync: no yield
+      return current + delta;
+    },
+    *get() {
+      return (yield* restate.sharedState().get<number>("count")) ?? 0;
+    },
+    *reset() {
+      restate.state().clearAll();
+    },
+  },
+  options: {handlers: {get: {shared: true}}},
+});
+```
+
+- `get` and `keys()` return a Future, so `yield*` them. `set`, `clear`, and
+  `clearAll` are synchronous.
+- **Shared handlers** (`shared: true`) run while an exclusive handler holds the
+  key. They can read state and send signals, but cannot write state. Use them
+  for `status`, `history`, `approve`, and `interrupt` endpoints next to a
+  long-running exclusive handler.
+- `restate.handlerRequest().key` is the current key and
+  `restate.handlerRequest().id` the current invocation ID.
+
+## Workflows
+
+A workflow is an object whose `run` handler executes exactly once per key
+(the workflow ID). Its other handlers are shared and can interact with the
+running `run`. See `waiting-and-signals.md` for durable promises.
+
+```ts
+export const onboarding = restate.workflow({
+  name: "Onboarding",
+  handlers: {
+    *run(email: string) {
+      yield* restate.run(() => createAccount(email), {name: "create account"});
+      restate.state().set("stage", "created");
+      return "done";
+    },
+    *stage() {
+      return yield* restate.sharedState().get<string>("stage");
+    },
+  },
+});
+```
+
+## Handler options
+
+`options` sets service-level options, such as `retryPolicy` and
+`inactivityTimeout`. `options.handlers` sets per-handler options:
+
+- for services and objects: `retryPolicy`, timeouts, `description`,
+  `metadata`, `ingressPrivate`, and for objects `shared` and `state`;
+- for workflows: only `state`. Set a workflow's retry policy and timeouts at
+  the service level.
+
+`state: {preload}` chooses which state keys are loaded eagerly when the
+handler starts: `true` for all, `false` for none, or a list of key names.
+`enableLazyState: true` is deprecated and equals `state: {preload: false}`.
+
+Use `retryPolicy` with `onMaxAttempts: "kill"` or `"pause"` to decide what
+happens to an invocation after its retries are exhausted.
+
+## Serving
+
+```ts
+import {serve} from "@restatedev/restate-sdk";
+
+await serve({services: [pricing, triage, counter, onboarding], port: 9080});
+```
+
+Register the endpoint with
+`npx @restatedev/restate deployments register http://localhost:9080`. In
+local development, re-register the same URL with `--force` after changing
+handlers; without it, the registration is left unchanged.
